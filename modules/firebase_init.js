@@ -6,14 +6,14 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBBgoWaCd6APngiq3Jv-d4abmByqZyFxJ8",
-  authDomain: "db-multimedia.firebaseapp.com",
-  projectId: "db-multimedia",
-  storageBucket: "db-multimedia.firebasestorage.app",
-  messagingSenderId: "703694156223",
-  appId: "1:703694156223:web:ecba5df473d07cf21db10a"
+  apiKey: "AIzaSyDmbYRqymX-0y28yj9K8P0oPbNrcmXTsG0",
+  authDomain: "ejerciciohelados.firebaseapp.com",
+  projectId: "ejerciciohelados",
+  storageBucket: "ejerciciohelados.firebasestorage.app",
+  messagingSenderId: "245621972682",
+  appId: "1:245621972682:web:f9c88262c7009a993f9e33",
+  measurementId: "G-05B0MTKSJ3"
 };
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore();

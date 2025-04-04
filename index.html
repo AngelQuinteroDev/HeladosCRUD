@@ -1,11 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Firebase Web</title>
-</head>
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to bottom, #ffe6f2, #ff99cc);
+    color: #71043b;
+    text-align: center;
+    padding: 20px;
+    margin: 0;
+}
+
+h1 {
+    color: #ff3385;
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+div {
+    background: rgba(255, 240, 245, 0.9);
+    border: 2px solid #ff99cc;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px auto;
+    width: 50%;
+    box-shadow: 6px 6px 20px rgba(255, 102, 178, 0.4);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+div:hover {
+    transform: scale(1.03);
+    box-shadow: 8px 8px 25px rgba(255, 102, 178, 0.5);
+}
+
+input {
+    padding: 12px;
+    border: 2px solid #ff66b2;
+    border-radius: 8px;
+    width: 90%;
+    margin-top: 5px;
+    font-size: 16px;
+    outline: none;
+    transition: border 0.3s ease-in-out;
+}
+
+input:focus {
+    border: 2px solid #ff3385;
+}
+
+button {
+    background: linear-gradient(135deg, #ff66b2, #ff3385);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 3px 3px 10px rgba(255, 102, 178, 0.4);
+}
+
+button:hover {
+    background: linear-gradient(135deg, #ff3385, #ff1a75);
+    transform: scale(1.07);
+    box-shadow: 5px 5px 15px rgba(255, 102, 178, 0.5);
+}
+
+#iceCreamList div {
+    text-align: left;
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    margin: 10px;
+    box-shadow: 4px 4px 15px rgba(255, 102, 178, 0.3);
+    transition: transform 0.3s ease-in-out;
+}
+
+#iceCreamList div:hover {
+    transform: scale(1.05);
+    box-shadow: 6px 6px 20px rgba(255, 102, 178, 0.4);
+}
+
+#iceCreamList h3 {
+    color: #ff3385;
+    font-weight: bold;
+}
+
+
+    </style>
+</head>
 <body>
     <div>
         <h1>Connected to Firestore</h1>
@@ -13,78 +103,111 @@
     </div>
 
     <div>
-        <h1>Add student to the database</h1>
-
-        <label for="docId">Student Code:</label>
-        <input type="text" id="docId" placeholder="Ej: 30003625"><br><br>
-
-        <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" placeholder="Ej: Sergio"><br><br>
-
-        <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" placeholder="Ej: Reyes"><br><br>
-
-        <label for="nickname">Nickname:</label>
-        <input type="text" id="nickname" placeholder="Ej: Profe"><br><br>
-
-        <label for="age">Age:</label>
-        <input type="number" id="age" placeholder="Ej: 18"><br><br>
-
-        <button id="addDocBtn">Add Student</button>
+        <h1>Add Ice Cream to the Database</h1>
+        <label for="docId">Ice Cream ID:</label>
+        <input type="text" id="docId" placeholder="Ej: choco123"><br><br>
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Ej: Chococono"><br><br>
+        <label for="brand">Brand:</label>
+        <input type="text" id="brand" placeholder="Ej: Cream Helado"><br><br>
+        <label for="availability">Availability (true/false):</label>
+        <input type="text" id="availability" placeholder="Ej: true"><br><br>
+        <label for="expiration">Expiration Date:</label>
+        <input type="datetime-local" id="expiration"><br><br>
+        <button id="addDocBtn">Add Ice Cream</button>
     </div>
+    
     <div>
-        <h1>Get student by id</h1>
+        <h1>Get Ice Cream by ID</h1>
+        <label for="getDocId">Ice Cream ID:</label>
+        <input type="text" id="getDocId" placeholder="Ej: choco123"><br><br>
+        <button id="getDocBtn">Get Ice Cream</button>
+    </div>
 
-        <label for="getDocId">Student Code:</label>
-        <input type="text" id="getDocId" placeholder="Ej: 30003625"><br><br>
-
-        <button id="getDocBtn">Get Student</button>
+    <div>
+        <h1>Available Ice Creams</h1>
+        <div id="iceCreamList"></div>
     </div>
 
     <script type="module">
         import { FirestoreService } from './modules/firestore_service.js';
-
-        const firestore = new FirestoreService("2025-I");
-
+        const firestore = new FirestoreService("Helados");
         document.getElementById("loadDataBtn").addEventListener("click", async () => {
             const docs = await firestore.getAllDocuments();
             console.log("Obtained Docs:", docs);
         });
-
         document.getElementById("addDocBtn").addEventListener("click", async () => {
             const docId = document.getElementById("docId").value.trim();
-            const firstName = document.getElementById("firstName").value.trim();
-            const lastName = document.getElementById("lastName").value.trim();
-            const nickname = document.getElementById("nickname").value.trim();
-            const ageValue = document.getElementById("age").value;
-            const age = ageValue ? parseInt(ageValue) : null;
-
-            if (!docId || !firstName || !lastName) {
-                alert("Fill in the required fields: Document ID, First Name and Last Name.");
+            const name = document.getElementById("name").value.trim();
+            const brand = document.getElementById("brand").value.trim();
+            const availability = document.getElementById("availability").value.trim().toLowerCase() === 'true';
+            const expiration = document.getElementById("expiration").value;
+            if (!docId || !name || !brand || !expiration) {
+                alert("Fill in all required fields.");
                 return;
             }
-
-            const data = {
-                firstName,
-                lastName,
-                nickname,                    
-                age: isNaN(age) ? null : age 
-            };
-
+            const data = { name, brand, availability, expiration: new Date(expiration) };
             await firestore.PostDocument(docId, data);
         });
-
         document.getElementById("getDocBtn").addEventListener("click", async () => {
-            const docId = document.getElementById("getDocId").value.trim();
+    const docId = document.getElementById("getDocId").value.trim();
+    if (!docId) {
+        alert("The ice cream ID is needed");
+        return;
+    }
+    const doc = await firestore.getDocumentById(docId);
 
-            if (!docId) {
-                alert("The student id is needed");
-                return;
-            }
-            const doc = await firestore.getDocumentById(docId);
-            console.log(doc);
-        });
+    const iceCreamList = document.getElementById("iceCreamList");
+    iceCreamList.innerHTML = ""; // Limpia contenido anterior
+
+    if (!doc) {
+        iceCreamList.innerHTML = `<p style="color:red;">No se encontró el helado con ID: ${docId}</p>`;
+        return;
+    }
+
+    const item = document.createElement("div");
+    item.style.border = "1px solid #ff99cc";
+    item.style.padding = "10px";
+    item.style.margin = "10px";
+    item.style.borderRadius = "5px";
+    item.style.backgroundColor = "#fff";
+
+    item.innerHTML = `
+        <h3>${doc.name}</h3>
+        <p><strong>Brand:</strong> ${doc.brand}</p>
+        <p><strong>Available:</strong> ${doc.availability ? "Yes" : "No"}</p>
+        <p><strong>Expiration:</strong> ${doc.expiration.toDate().toLocaleDateString()}</p>
+
+    `;
+
+    iceCreamList.appendChild(item);
+});
+
+        document.getElementById("loadDataBtn").addEventListener("click", async () => {
+    const docs = await firestore.getAllDocuments();
+    const iceCreamList = document.getElementById("iceCreamList");
+    iceCreamList.innerHTML = ""; // Limpiar contenido anterior
+
+    docs.forEach(doc => {
+        const item = document.createElement("div");
+        item.style.border = "1px solid #ff99cc";
+        item.style.padding = "10px";
+        item.style.margin = "10px";
+        item.style.borderRadius = "5px";
+        item.style.backgroundColor = "#fff";
+
+        item.innerHTML = `
+            <h3>${doc.name}</h3>
+            <p><strong>Brand:</strong> ${doc.brand}</p>
+            <p><strong>Available:</strong> ${doc.availability ? "Yes" : "No"}</p>
+            <p><strong>Expiration:</strong> ${doc.expiration.toDate().toLocaleDateString()}</p>
+
+        `;
+
+        iceCreamList.appendChild(item);
+    });
+});
+
     </script>
 </body>
-
 </html>
