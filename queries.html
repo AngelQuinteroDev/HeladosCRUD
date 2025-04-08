@@ -83,6 +83,8 @@
             const comparator = document.getElementById("comparator").value.trim();
             const valueRaw = document.getElementById("value").value.trim();
 
+            console.log(column, comparator, valueRaw);
+
             // Convert to number if it's numeric
             const value = isNaN(valueRaw) ? valueRaw : Number(valueRaw);
 
