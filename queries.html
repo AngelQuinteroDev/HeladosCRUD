@@ -168,6 +168,42 @@
             resultsEl.textContent = JSON.stringify(docs, null, 2);
         };
 
+                // Add fields to filter
+                document.getElementById("addFilterBtn").addEventListener("click", () => {
+            console.log("Add field clicked")
+            const container = document.getElementById("filtersContainer");
+            const div = document.createElement("div");
+            div.classList.add("filter");
+
+            div.innerHTML = `
+                <input type="text" placeholder="Column" class="filterColumn">
+                <input type="text" placeholder="Comparator (==, >, <, etc)" class="filterComparator">
+                <input type="text" placeholder="Value" class="filterValue">
+                `;
+
+            container.appendChild(div);
+        });
+
+        // Multi query
+        document.getElementById("multiWhereQueryBtn").addEventListener("click", async () => {
+            const filterDivs = document.querySelectorAll("#filtersContainer .filter");
+            const filters = [];
+
+            filterDivs.forEach(div => {
+                const column = div.querySelector(".filterColumn").value.trim();
+                const comparison = div.querySelector(".filterComparator").value.trim();
+                const valueRaw = div.querySelector(".filterValue").value.trim();
+
+                if (column && comparison) {
+                    const value = isNaN(valueRaw) ? valueRaw : Number(valueRaw);
+                    filters.push({ column, comparison, value });
+                }
+            });
+
+            const docs = await firestore.combinedQuery(filters);
+            displayResults(docs);
+        });
+
         document.getElementById("whereQueryBtn").addEventListener("click", async () => {
             const column = document.getElementById("column").value.trim();
             const comparator = document.getElementById("comparator").value.trim();
