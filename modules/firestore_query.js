@@ -67,7 +67,6 @@ export class FirestoreQuery {
         const results = [];
         snapshot.forEach(doc => {
             console.log(doc.id, '=>', doc.data());
-            results.push({ id: doc, ...doc.data() });
         });
         return results;
     }
