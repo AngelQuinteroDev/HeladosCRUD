@@ -89,7 +89,22 @@
 </head>
 
 <body>
+
     <h1>Firestore Query Tester</h1>
+
+    <div>
+        <h2>Where Queries (Multiple)</h2>
+        <button id="addFilterBtn">Add Filter</button><br><br>
+        <button id="multiWhereQueryBtn">Run Combined Query</button>
+        <div id="filtersContainer">
+            <div class="filter">
+                <input type="text" placeholder="Column" class="filterColumn">
+                <input type="text" placeholder="Comparator (==, >, <, etc)" class="filterComparator">
+                <input type="text" placeholder="Value" class="filterValue">
+            </div>
+        </div>
+
+    </div>
 
     <div>
         <h2>Where Query</h2>
