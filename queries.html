@@ -157,9 +157,9 @@
             const column = document.getElementById("column").value.trim();
             const comparator = document.getElementById("comparator").value.trim();
             const valueRaw = document.getElementById("value").value.trim();
-            const value = (valueRaw) ? valueRaw : Number(valueRaw);
+            
 
-            const docs = await firestore.whereQuery(column, comparator, value);
+            const docs = await firestore.whereQuery(column, comparator, valueRaw);
             displayResults(docs);
         });
 
