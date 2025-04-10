@@ -4,6 +4,88 @@
 <head>
     <meta charset="UTF-8">
     <title>Firebase Web</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom, #ffe6f2, #ff99cc);
+            color: #71043b;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #ff3385;
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        div {
+            background: rgba(255, 240, 245, 0.9);
+            border: 2px solid #ff99cc;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            width: 50%;
+            box-shadow: 6px 6px 20px rgba(255, 102, 178, 0.4);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        div:hover {
+            transform: scale(1.03);
+            box-shadow: 8px 8px 25px rgba(255, 102, 178, 0.5);
+        }
+
+        input,
+        select {
+            padding: 12px;
+            border: 2px solid #ff66b2;
+            border-radius: 8px;
+            width: 90%;
+            margin-top: 5px;
+            font-size: 16px;
+            outline: none;
+            transition: border 0.3s ease-in-out;
+        }
+
+        input:focus,
+        select:focus {
+            border: 2px solid #ff3385;
+        }
+
+        button {
+            background: linear-gradient(135deg, #ff66b2, #ff3385);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 3px 3px 10px rgba(255, 102, 178, 0.4);
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #ff3385, #ff1a75);
+            transform: scale(1.07);
+            box-shadow: 5px 5px 15px rgba(255, 102, 178, 0.5);
+        }
+
+        pre {
+            background: white;
+            color: #71043b;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+            width: 80%;
+            margin: 20px auto;
+            box-shadow: 4px 4px 15px rgba(255, 102, 178, 0.3);
+            overflow-x: auto;
+        }
+    </style>
 </head>
 
 <body>
@@ -23,8 +105,6 @@
         <button id="whereQueryBtn">Run Where Query</button>
     </div>
 
-    <hr>
-
     <div>
         <h2>Order + Limit</h2>
         <label for="orderColumn">Order by:</label>
@@ -42,8 +122,6 @@
         <button id="orderLimitQueryBtn">Run Order + Limit Query</button>
     </div>
 
-    <hr>
-
     <div>
         <h2>Prefix Search</h2>
         <label for="prefixColumn">Column:</label>
@@ -54,8 +132,6 @@
 
         <button id="prefixQueryBtn">Run Prefix Search</button>
     </div>
-
-    <hr>
 
     <div>
         <h2>Results</h2>
@@ -77,22 +153,16 @@
             resultsEl.textContent = JSON.stringify(docs, null, 2);
         };
 
-        // Where Query
         document.getElementById("whereQueryBtn").addEventListener("click", async () => {
             const column = document.getElementById("column").value.trim();
             const comparator = document.getElementById("comparator").value.trim();
             const valueRaw = document.getElementById("value").value.trim();
-
-            console.log(column, comparator, valueRaw);
-
-            // Convert to number if it's numeric
             const value = isNaN(valueRaw) ? valueRaw : Number(valueRaw);
 
             const docs = await firestore.whereQuery(column, comparator, value);
             displayResults(docs);
         });
 
-        // Order + Limit Query
         document.getElementById("orderLimitQueryBtn").addEventListener("click", async () => {
             const column = document.getElementById("orderColumn").value.trim();
             const direction = document.getElementById("orderDir").value;
@@ -102,7 +172,6 @@
             displayResults(docs);
         });
 
-        // Prefix Search
         document.getElementById("prefixQueryBtn").addEventListener("click", async () => {
             const column = document.getElementById("prefixColumn").value.trim();
             const prefix = document.getElementById("prefixValue").value.trim();
