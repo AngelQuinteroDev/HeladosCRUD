@@ -87,38 +87,38 @@
         }
 
         #results {
-    background: #f7f7f7;
-    color: #4a4a4a;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    margin: 20px auto;
-    font-family: 'Courier New', Courier, monospace;
-    overflow-x: auto;
-    max-height: 400px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    line-height: 1.5;
-}
+            background: #f7f7f7;
+            color: #4a4a4a;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            margin: 20px auto;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: auto;
+            max-height: 400px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.5;
+        }
 
-#results .json-key {
-    color: #ff3385; /* Color de las claves */
-    font-weight: bold;
-}
-
-#results .json-value {
-    color: #333333; /* Color de los valores */
-}
-
-#results .json-object {
-    margin-left: 20px; /* Sangría para objetos anidados */
-}
-
-#results .json-array {
-    margin-left: 20px; /* Sangría para arrays */
-    color: #007acc; /* Color para los arrays */
-}
+        #results .json-key {
+            color: #ff3385; /* Color de las claves */
+            font-weight: bold;
+        }
+        
+        #results .json-value {
+            color: #333333; /* Color de los valores */
+        }
+        
+        #results .json-object {
+            margin-left: 20px; /* Sangría para objetos anidados */
+        }
+        
+        #results .json-array {
+            margin-left: 20px; /* Sangría para arrays */
+            color: #007acc; /* Color para los arrays */
+        }
 
     </style>
 </head>
@@ -206,16 +206,16 @@
                      .replace(/\]/g, '</div>]');
 };
 
-const displayResults = (docs) => {
-    const resultsEl = document.getElementById("results");
-    if (!docs || docs.length === 0) {
-        resultsEl.innerHTML = "No documents found.";
-        return;
-    }
-
-    const formattedResults = docs.map(doc => formatJson(doc)).join("<br><br>");
-    resultsEl.innerHTML = formattedResults;
-};
+        const displayResults = (docs) => {
+            const resultsEl = document.getElementById("results");
+            if (!docs || docs.length === 0) {
+                resultsEl.innerHTML = "No documents found.";
+                return;
+            }
+        
+            const formattedResults = docs.map(doc => formatJson(doc)).join("<br><br>");
+            resultsEl.innerHTML = formattedResults;
+        };
 
 
         
