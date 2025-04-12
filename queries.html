@@ -85,6 +85,41 @@
             box-shadow: 4px 4px 15px rgba(255, 102, 178, 0.3);
             overflow-x: auto;
         }
+
+        #results {
+    background: #f7f7f7;
+    color: #4a4a4a;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    margin: 20px auto;
+    font-family: 'Courier New', Courier, monospace;
+    overflow-x: auto;
+    max-height: 400px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.5;
+}
+
+#results .json-key {
+    color: #ff3385; /* Color de las claves */
+    font-weight: bold;
+}
+
+#results .json-value {
+    color: #333333; /* Color de los valores */
+}
+
+#results .json-object {
+    margin-left: 20px; /* Sangría para objetos anidados */
+}
+
+#results .json-array {
+    margin-left: 20px; /* Sangría para arrays */
+    color: #007acc; /* Color para los arrays */
+}
+
     </style>
 </head>
 
@@ -157,16 +192,33 @@
         import { FirestoreQuery } from './modules/firestore_query.js';
 
         const firestore = new FirestoreQuery("Helados");
+        const formatJson = (json) => {
+    // Convertir el JSON en un string formateado con 2 espacios de indentación
+    const jsonString = JSON.stringify(json, null, 2);
 
-        const displayResults = (docs) => {
-            const resultsEl = document.getElementById("results");
-            if (!docs || docs.length === 0) {
-                resultsEl.textContent = "No documents found.";
-                return;
-            }
+    // Convertir el JSON string a HTML con etiquetas <span> para claves y valores
+    return jsonString.replace(/"([^"]+)":/g, '<span class="json-key">"$1"</span>:') // Resaltar las claves
+                     .replace(/:\s*"([^"]+)"/g, ': <span class="json-value">"$1"</span>') // Resaltar los valores de texto
+                     .replace(/:\s*(\d+)/g, ': <span class="json-value">$1</span>') // Resaltar los valores numéricos
+                     .replace(/{/g, '<div class="json-object">{') // Para objetos
+                     .replace(/}/g, '</div>}') // Cerrar objetos
+                     .replace(/\[/g, '<div class="json-array">[') // Para arrays
+                     .replace(/\]/g, '</div>]');
+};
 
-            resultsEl.textContent = JSON.stringify(docs, null, 2);
-        };
+const displayResults = (docs) => {
+    const resultsEl = document.getElementById("results");
+    if (!docs || docs.length === 0) {
+        resultsEl.innerHTML = "No documents found.";
+        return;
+    }
+
+    const formattedResults = docs.map(doc => formatJson(doc)).join("<br><br>");
+    resultsEl.innerHTML = formattedResults;
+};
+
+
+        
 
                 // Add fields to filter
                 document.getElementById("addFilterBtn").addEventListener("click", () => {
